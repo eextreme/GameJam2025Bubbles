@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://g2vk6g8603ce"]
+
+[ext_resource type="Script" path="res://selection_bubble.gd" id="1_1x2gj"]
+[ext_resource type="Texture2D" uid="uid://bsdn2uuxsbj5n" path="res://icon.svg" id="2_3vulo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cces2"]
+radius = 62.5859
+
+[node name="SelectionBubble" type="Area2D"]
+script = ExtResource("1_1x2gj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3vulo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cces2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
