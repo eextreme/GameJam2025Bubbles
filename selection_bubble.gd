@@ -26,11 +26,42 @@ func _physics_process(delta: float) -> void:
 	
 	pass
 
-func supportBubbleEffect(body : PlayerBubble):
-	body.support_force+=3 * (air_d - gas_d) * get_gravity()
+func supportMoney():
+	#Increase Volume, Surface Area
+	#Low - insignificant, fragile
+	#Medium - move well with others
+	#High - more money means more cost means
+	pass
+	
+func supportPeers():
+	#Increase Lift Force, increase competition and obstacles
+	#Low - low lift, can sink
+	#Medium - hovers comfortably
+	#high - Competition, obstacles, and pirates
+	pass
+	
+func supportMotivation():
+	#Increase forward velocity, increase drag, and can miss power-ups
+	#Low - slow forward velocity
+	#Medium - good forward velocity
+	#High - fast forward velocity, change to miss power-ups
+	pass
+
+func supportKnowledge():
+	#Increased stability, increased density,
+	#Low - easily popped
+	#Medium - Can handle most obstacles
+	#High - Can handle any obstacle, but slow and heavy 
+	pass
+
+func supportOrganization():
+	#Float stability, float amplitude
+	#Low high float amplitude
+	#Medium mostly stable
+	#High straight line
 	pass
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_class("PlayerBubble"):
-		supportBubbleEffect(body)
+		print("absorbed")
 	pass # Replace with function body.

@@ -1,6 +1,11 @@
 extends Node2D
-@export var spawners : Node2D
 @onready var bubble = preload("res://selection_bubble.tscn")
+@export var moneyMag : TextureRect
+@export var supportMag : TextureRect
+@export var motivationMag : TextureRect
+@export var knowledgeMag : TextureRect
+@export var planningMag : TextureRect
+@export var competitionMag : TextureRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

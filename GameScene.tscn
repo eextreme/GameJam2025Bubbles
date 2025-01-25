@@ -1,20 +1,89 @@
-[gd_scene load_steps=6 format=3 uid="uid://djk66ke8w80s8"]
+[gd_scene load_steps=25 format=3 uid="uid://djk66ke8w80s8"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_y4wdy"]
 [ext_resource type="Script" path="res://player_bubble.gd" id="2_404le"]
 [ext_resource type="Texture2D" uid="uid://bsmwwf3i3rs1h" path="res://Art/vecteezy_soap-bubble_36642946.png" id="2_j58jx"]
 [ext_resource type="Texture2D" uid="uid://dn3jwk1pqa1gr" path="res://Art/BG/game_background_1/game_background_1.png" id="4_qk76v"]
+[ext_resource type="Texture2D" uid="uid://cvdnrvw634my4" path="res://Art/Props/bubbleHolder.png" id="5_34ran"]
+[ext_resource type="Texture2D" uid="uid://dpk1mv7q28dpp" path="res://Art/PowerUps/coins.png" id="6_kxd8r"]
+[ext_resource type="Texture2D" uid="uid://bno0qc4rw58m6" path="res://Art/PowerUps/discussion.png" id="7_m2g10"]
+[ext_resource type="Texture2D" uid="uid://cql62jnyys6ky" path="res://Art/PowerUps/bugle-call.png" id="8_8g0an"]
+[ext_resource type="Texture2D" uid="uid://dawgjtdj3vjpm" path="res://Art/PowerUps/enlightenment.png" id="9_mfq08"]
+[ext_resource type="Texture2D" uid="uid://cl7g6dvmrbg0" path="res://Art/PowerUps/calendar.png" id="10_168o0"]
+[ext_resource type="Texture2D" uid="uid://10leo4cdjt8b" path="res://Art/Props/tracker.png" id="11_vgk38"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bdg2g"]
 radius = 103.947
 
-[node name="Node2D" type="Node2D"]
-script = ExtResource("1_y4wdy")
+[sub_resource type="Gradient" id="Gradient_e5lmd"]
+colors = PackedColorArray(0.0980392, 0.580392, 0.239216, 1, 1, 1, 1, 1)
 
-[node name="PlayerBody" type="RigidBody2D" parent="." groups=["target"]]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k35hu"]
+gradient = SubResource("Gradient_e5lmd")
+width = 320
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_uufo2"]
+colors = PackedColorArray(0.866667, 0.792157, 0.0862745, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4iwsd"]
+gradient = SubResource("Gradient_uufo2")
+width = 320
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_f7uiq"]
+colors = PackedColorArray(0.768627, 0.145098, 0.0431373, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m4xx1"]
+gradient = SubResource("Gradient_f7uiq")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_oi6se"]
+colors = PackedColorArray(0.105882, 0.631373, 0.882353, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kyllo"]
+gradient = SubResource("Gradient_oi6se")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_87r1e"]
+colors = PackedColorArray(0.462745, 0.25098, 0.0705882, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rtap0"]
+gradient = SubResource("Gradient_87r1e")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_lwrb5"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8es61"]
+gradient = SubResource("Gradient_lwrb5")
+height = 32
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("moneyMag", "supportMag", "motivationMag", "knowledgeMag", "planningMag", "competitionMag")]
+script = ExtResource("1_y4wdy")
+moneyMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Money/MoneyTrack")
+supportMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/PublicSupport/SupportTrack")
+motivationMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Motivation/MotivationTrack")
+knowledgeMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Knowledge/KnowledgeTrack")
+planningMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Organization/PlanningTrack")
+competitionMag = NodePath("CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Competition/CompetitionTrack")
+
+[node name="PlayerBody" type="RigidBody2D" parent="." node_paths=PackedStringArray("camera") groups=["target"]]
+visible = false
 contact_monitor = true
 max_contacts_reported = 3
 script = ExtResource("2_404le")
+camera = NodePath("Camera2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerBody"]
 texture = ExtResource("2_j58jx")
@@ -23,6 +92,7 @@ texture = ExtResource("2_j58jx")
 shape = SubResource("CircleShape2D_bdg2g")
 
 [node name="Camera2D" type="Camera2D" parent="PlayerBody"]
+offset = Vector2(500, 0)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -31,3 +101,271 @@ motion_mirroring = Vector2(1920, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 texture = ExtResource("4_qk76v")
+
+[node name="blower" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_34ran")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/NinePatchRect"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 104.0
+grow_horizontal = 2
+columns = 2
+
+[node name="Money" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture2D_k35hu")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Money"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Money"
+horizontal_alignment = 1
+
+[node name="MoneyTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Money"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 288.0
+offset_top = -2.0
+offset_right = 358.0
+offset_bottom = 33.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="PublicSupport" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture2D_4iwsd")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/PublicSupport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Support"
+horizontal_alignment = 1
+
+[node name="SupportTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/PublicSupport"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 286.0
+offset_top = -2.0
+offset_right = 1150.0
+offset_bottom = 33.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Motivation" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_m4xx1")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Motivation"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -11.5
+offset_right = 42.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Motivation"
+horizontal_alignment = 1
+
+[node name="MotivationTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Motivation"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 288.0
+offset_top = -2.0
+offset_right = 358.0
+offset_bottom = 33.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Knowledge" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_kyllo")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Knowledge"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -11.5
+offset_right = 48.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Knownledge"
+horizontal_alignment = 1
+
+[node name="KnowledgeTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Knowledge"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 286.0
+offset_top = -2.0
+offset_right = 356.0
+offset_bottom = 33.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Organization" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_rtap0")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Organization"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -11.5
+offset_right = 34.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Planning"
+horizontal_alignment = 1
+
+[node name="PlanningTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Organization"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 288.0
+offset_top = -1.0
+offset_right = 358.0
+offset_bottom = 34.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Competition" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_8es61")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Competition"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -11.5
+offset_right = 48.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Competition"
+horizontal_alignment = 1
+
+[node name="CompetitionTrack" type="TextureRect" parent="CanvasLayer/MarginContainer/NinePatchRect/GridContainer/Competition"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 286.0
+offset_top = -1.0
+offset_right = 356.0
+offset_bottom = 34.0
+texture = ExtResource("11_vgk38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -712.0
+offset_top = -512.0
+offset_right = 712.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Cash" type="TextureButton" parent="CanvasLayer/MarginContainer/NinePatchRect/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("6_kxd8r")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="PublicSupport" type="TextureButton" parent="CanvasLayer/MarginContainer/NinePatchRect/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("7_m2g10")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Motivation" type="TextureButton" parent="CanvasLayer/MarginContainer/NinePatchRect/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("8_8g0an")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Knowledge" type="TextureButton" parent="CanvasLayer/MarginContainer/NinePatchRect/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("9_mfq08")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Organization" type="TextureButton" parent="CanvasLayer/MarginContainer/NinePatchRect/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("10_168o0")
+ignore_texture_size = true
+stretch_mode = 4
