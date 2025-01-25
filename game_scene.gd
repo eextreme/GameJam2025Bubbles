@@ -9,9 +9,8 @@ func _ready() -> void:
 var delay = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	delay+=delta
-	if delay>=1.5:
-		var object = bubble.instantiate()
-		object.position = Vector2(randf_range(105*3,105*5)*randi_range(-1,1),randi_range(105*3,315*5)*randi_range(-1,1))
-		add_child(object)
-		delay=0
+	if Input.is_action_just_pressed("Spawn"):
+		var item = bubble.instantiate()
+		item.global_position = get_global_mouse_position()
+		add_child(item)
+	pass

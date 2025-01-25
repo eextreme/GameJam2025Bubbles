@@ -1,21 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://djk66ke8w80s8"]
+[gd_scene load_steps=6 format=3 uid="uid://djk66ke8w80s8"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_y4wdy"]
+[ext_resource type="Script" path="res://player_bubble.gd" id="2_404le"]
 [ext_resource type="Texture2D" uid="uid://bsmwwf3i3rs1h" path="res://Art/vecteezy_soap-bubble_36642946.png" id="2_j58jx"]
+[ext_resource type="Texture2D" uid="uid://dn3jwk1pqa1gr" path="res://Art/BG/game_background_1/game_background_1.png" id="4_qk76v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bdg2g"]
 radius = 103.947
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("spawners")]
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_y4wdy")
-spawners = NodePath("")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["target"]]
+[node name="PlayerBody" type="RigidBody2D" parent="." groups=["target"]]
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("2_404le")
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBody"]
 texture = ExtResource("2_j58jx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBody"]
 shape = SubResource("CircleShape2D_bdg2g")
 
-[node name="Camera2D" type="Camera2D" parent="StaticBody2D"]
+[node name="Camera2D" type="Camera2D" parent="PlayerBody"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("4_qk76v")

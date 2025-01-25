@@ -1,16 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://g2vk6g8603ce"]
+[gd_scene load_steps=11 format=3 uid="uid://g2vk6g8603ce"]
 
 [ext_resource type="Script" path="res://selection_bubble.gd" id="1_1x2gj"]
-[ext_resource type="Texture2D" uid="uid://bsdn2uuxsbj5n" path="res://icon.svg" id="2_3vulo"]
+[ext_resource type="Texture2D" uid="uid://csbjig6wtrxmr" path="res://Art/Coloured/512x512/bubble_1.png" id="2_nplvl"]
+[ext_resource type="Texture2D" uid="uid://jvlfyr6ewpwc" path="res://Art/Coloured/512x512/bubble_2.png" id="3_0e6al"]
+[ext_resource type="Texture2D" uid="uid://cvypr5cxmpwl1" path="res://Art/Coloured/512x512/bubble_4.png" id="4_kh06u"]
+[ext_resource type="Texture2D" uid="uid://bx1vy12wqola" path="res://Art/Coloured/512x512/bubble_5.png" id="5_wbtqu"]
+[ext_resource type="Texture2D" uid="uid://dquk1dnc7okiq" path="res://Art/Coloured/512x512/bubble_6.png" id="6_e72jv"]
+[ext_resource type="Texture2D" uid="uid://dbirmtcdveail" path="res://Art/Coloured/512x512/bubble_7.png" id="7_yg2fp"]
+[ext_resource type="Texture2D" uid="uid://ctyj12s3kbdxb" path="res://Art/Coloured/512x512/bubble_3.png" id="8_6kp2h"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kefaw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_nplvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_0e6al")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_kh06u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wbtqu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e72jv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_yg2fp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6kp2h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cces2"]
 radius = 62.5859
 
-[node name="SelectionBubble" type="Area2D"]
+[node name="SelectionBubble" type="RigidBody2D" groups=["supportBubble"]]
+collision_layer = 2
+mass = 0.01
+contact_monitor = true
+max_contacts_reported = 3
 script = ExtResource("1_1x2gj")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_3vulo")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_kefaw")
+frame_progress = 0.604844
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_cces2")
