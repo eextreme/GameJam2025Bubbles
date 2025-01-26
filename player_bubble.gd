@@ -1,5 +1,5 @@
 extends RigidBody2D
-class_name PlayerBubble
+class_name PlayerBubble_depre
 
 enum magTypes {
 	MONEY,
@@ -18,8 +18,8 @@ const PLAN = 4
 const COMPETITION = 5
 
 @onready var support_force : Vector2 = Vector2.ZERO
-@onready var startMag = {}
-@onready var currentMag = {}
+@onready var startMag = [1,1,1,1,1,1]
+@onready var currentMag = [1,1,1,1,1,1]
 
 var volume: float #calculated
 var surfaceArea: float #calculated
@@ -40,32 +40,38 @@ func _physics_process(delta: float) -> void:
 @onready var drag = 0.5
 @onready var gravity = Vector2(0,9.81)
 @onready var heavyIntent = 1.200
-@onready var applyForce = 0.01
+@onready var applyForce = 1
 @onready var addAmp = 1
 @onready var surfaceTension = 0.072
 
+func debugInfo():
+	print("Mass: ", mass)
+	print("Float Force: ", upForce-downForce)
+	print("horizonal speed: ", applyForce, " ", linear_velocity)
+
 func updateSphereInfo():
-	var ratio = currentMag[MONEY]/startMag[MONEY]
-	radius = 10 * ratio/100
+	var ratio = currentMag[MONEY]/startMag[MONEY]/10
+	print("Ratio: ", ratio)
+	radius = 10 * ratio
 	$CollisionShape2D.scale = ratio * Vector2(1,1)
 	surfaceArea = 4*PI*pow(radius,2)
 	volume = surfaceArea * thickness
 	mass = volume * liquidDensity
 	
-	applyForce = Vector2(0.01 * currentMag[MOTIVE]/startMag[MOTIVE], 0.01 * currentMag[SUPPORT]/startMag[SUPPORT])
+	applyForce = 50 * currentMag[MOTIVE]/startMag[MOTIVE]
 	addAmp = 1 * currentMag[PLAN]/startMag[PLAN]
-	surfaceTension = 0.72 * currentMag[KNOWLEDGE]/startMag[KNOWLEDGE]
+	surfaceTension = 0.072 * currentMag[KNOWLEDGE]/startMag[KNOWLEDGE]
 
 @onready var liftTimer = 3
 func updateLiftInfo(delta):
-	var v = 4/3 * PI * pow(radius,3)
-	upForce = v * airDensity * get_gravity()
+	#var v = 4/3 * PI * pow(radius,3)
+	upForce = volume * airDensity * get_gravity()
 	return upForce
 
 @onready var pressureTimer = 3
 func updateDownInfo(delta):	
-	var v = 4/3 * PI * pow(radius,3)
-	downForce = v * heavyIntent * get_gravity()
+	#var v = 4/3 * PI * pow(radius,3)
+	downForce = volume * heavyIntent * get_gravity()
 	return downForce
 
 @onready var driveTimer = 2
@@ -96,8 +102,8 @@ func stabilityCheck(delta):
 	var p_diff = 4 * surfaceTension/radius
 	var p_pop = p_diff * surfaceArea
 	
-	var drag_x = 0.5 * drag * airDensity * surfaceArea * pow(linear_velocity.x,2)/50
-	var drag_y = 0.5 * drag * airDensity * surfaceArea * pow(linear_velocity.y,2)/50
+	var drag_x = 0.5 * drag * airDensity * surfaceArea * pow(linear_velocity.x,2)/10000
+	var drag_y = 0.5 * drag * airDensity * surfaceArea * pow(linear_velocity.y,2)/10000
 	print("p_pop: ", p_pop, " drag_force_x: ", drag_x, " drag_force_y: ", drag_y)
 	
 	if drag_x > p_pop or drag_y>p_pop:
@@ -113,11 +119,13 @@ func flyingCalc(delta):
 	var fwd = updateForwardInfo(delta)
 	updateWobbleInfo(delta)
 	spawnObstacle(delta)
+	debugInfo()
 	stabilityCheck(delta)
 	
-	gravity_scale =  currentMag[COMPETITION]/startMag[COMPETITION] * delta
-	
-	apply_central_force((up-down)-mass*get_gravity()+fwd*Vector2(1,0))
+	#gravity_scale =  currentMag[COMPETITION]/startMag[COMPETITION] * delta
+	var totalForce = 0.01*(up-down)/0.01-mass*get_gravity()+fwd*Vector2(1,0)
+	print("totalForce:", totalForce)
+	apply_central_force(totalForce)
 	
 	##if Input.is_action_just_pressed("Support1"):
 		##apply_central_impulse(Ve)

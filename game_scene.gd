@@ -25,12 +25,14 @@ enum magTypes {
 	COMPETITION
 }
 
-@onready var moneyStart = moneyMag.position.x
-@onready var supportStart = supportMag.position.x
+@onready var moneyMax = moneyMag.position.x
+@onready var supportMax = supportMag.position.x
+@onready var competitionMax = competitionMag.position.x
+
 @onready var motivationStart = motivationMag.position.x
 @onready var knowledgeStart = knowledgeMag.position.x
 @onready var planningStart = planningMag.position.x
-@onready var competitionStart = competitionMag.position.x
+
 
 var cur_state = states.LAUNCH
 # Called when the node enters the scene tree for the first time.
@@ -45,7 +47,9 @@ func spawnSupport(entry):
 	item.global_position.x = playerBody.global_position.x
 	item.global_position.y = playerBody.global_position.y+324
 	item.selected = entry
+	
 	magArray[entry].position.x+=5
+	playerBody.health-=(5-entry)*10
 	add_child(item)
 	
 	
@@ -53,10 +57,12 @@ func spawnSupport(entry):
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Support1"):
 		spawnSupport(0)
+		competitionMag.position.x+=1
 		pass
 	
 	if Input.is_action_just_pressed("Support2"):
 		spawnSupport(1)
+		competitionMag.position.x+=1
 		pass
 	
 	if Input.is_action_just_pressed("Support3"):
@@ -90,36 +96,39 @@ func _physics_process(delta: float) -> void:
 var dirMag = 1
 var count = -2*PI
 
-func randomStart(stat : TextureRect, startPos, offset=0):
-	stat.position.x=startPos+sin(count+offset)*100
+func randomStart(stat : TextureRect, startPos, offset=0, mag=100 ):
+	stat.position.x=startPos+sin(count+offset)*mag
 	count+=randf_range(PI/720,PI/360)	
-	
+
 func launchFunction():
-	playerBody.gravity_scale=0
+	#playerBody.gravity_scale=0
+	playerBody.visible = false
 	camera.offset.x=500
 	
-	randomStart(moneyMag, moneyStart)
-	randomStart(supportMag,supportStart)
+	randomStart(moneyMag, moneyMax,0,45)
+	randomStart(supportMag,supportMax,PI/4,45)
+	#randomStart(competitionMag,competitionStart)
 	
 	randomStart(motivationMag,motivationStart,PI/4)
 	randomStart(knowledgeMag,knowledgeStart)
-	randomStart(planningMag,planningStart,PI/4)
-	randomStart(competitionMag,competitionStart)
+	randomStart(planningMag,planningStart,PI/6)
+	
 	
 	if Input.is_action_just_pressed("launch"):
 		camera.offset=Vector2.ZERO
-		playerBody.startMag =[moneyStart,supportStart,motivationStart,knowledgeStart,planningStart,competitionStart]
+		playerBody.startMag =[moneyMax,supportMax,motivationStart,knowledgeStart,planningStart,competitionMax]
+		playerBody.visible = true
 		cur_state=states.FLYING
 	pass
 
 func flyingFunction(delta):
 	playerBody.currentMag =[
-			moneyMag.position.x,
-			supportMag.position.x,
+			moneyMag.global_position.x,
+			supportMag.global_position.x,
 			motivationMag.position.x,
 			knowledgeMag.position.x,
 			planningMag.position.x,
-			competitionMag.position.x]
+			competitionMag.global_position.x]
 	playerBody.flyingCalc(delta)
 	playerLossCalc(delta)
 	camera.global_position = playerBody.global_position
@@ -131,20 +140,21 @@ var motiveLoss = 1
 var knowledgeLoss = 1
 var planningLoss = 1
 
-func tickLoss(target, entry : TextureRect, delta, max):
+func tickLoss(target, entry : TextureRect, delta, time, minValue):
 	target-=delta
-	if target<=0:
+	if target<=0 and entry.position.x>minValue:
 		entry.position.x-=randf_range(1,3)
-		return max
+		return time
 	else:
 		return target
 
 func playerLossCalc(delta):
-	moneyLoss = tickLoss(moneyLoss, moneyMag,delta, 1)
-	supportLoss = tickLoss(supportLoss, supportMag,delta, 1)
-	motiveLoss = tickLoss(motiveLoss, motivationMag,delta, 1)
-	knowledgeLoss = tickLoss(knowledgeLoss, knowledgeMag,delta, 1)
-	planningLoss = tickLoss(planningLoss, planningMag,delta, 1)
+	moneyLoss = tickLoss(moneyLoss, moneyMag,delta, 1,1)
+	supportLoss = tickLoss(supportLoss, supportMag,delta, 1,1)
+	
+	motiveLoss = tickLoss(motiveLoss, motivationMag,delta, 1,0)
+	knowledgeLoss = tickLoss(knowledgeLoss, knowledgeMag,delta, 1,0)
+	planningLoss = tickLoss(planningLoss, planningMag,delta, 1,0)
 
 func popFunction():
 	pass

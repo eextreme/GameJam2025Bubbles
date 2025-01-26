@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 	var downForce = mass * get_gravity()
 	var drag = sin(start)*Vector2(20,20)
 	
-	print("float:",floatForce,"down:",downForce,"global_pos",global_position)
+	#print("float:",floatForce,"down:",downForce,"global_pos",global_position)
 	
 	var forceRng = Vector2(randf_range(-0.1,0.1),randf_range(-0.1,0.1))
 	apply_central_force(floatForce-downForce+drag+forceRng)
