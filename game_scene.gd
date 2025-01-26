@@ -44,12 +44,11 @@ var delay = 0
 func spawnSupport(entry):
 	var magArray = [moneyMag, supportMag, motivationMag, knowledgeMag,planningMag]
 	var item = bubble.instantiate() as SupportBubble
-	item.global_position.x = playerBody.global_position.x
+	item.global_position.x = playerBody.global_position.x + 500
 	item.global_position.y = playerBody.global_position.y+324
 	item.selected = entry
-	
 	magArray[entry].position.x+=5
-	playerBody.health-=(5-entry)*10
+	playerBody.health-=(5-entry)*2
 	add_child(item)
 	
 	
@@ -57,12 +56,12 @@ func spawnSupport(entry):
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Support1"):
 		spawnSupport(0)
-		competitionMag.position.x+=1
+		competitionMag.position.x+=2
 		pass
 	
 	if Input.is_action_just_pressed("Support2"):
 		spawnSupport(1)
-		competitionMag.position.x+=1
+		competitionMag.position.x+=3
 		pass
 	
 	if Input.is_action_just_pressed("Support3"):
@@ -122,6 +121,8 @@ func launchFunction():
 	pass
 
 func flyingFunction(delta):
+	camera.offset.x=500
+	$blower.visible = false
 	playerBody.currentMag =[
 			moneyMag.global_position.x,
 			supportMag.global_position.x,
@@ -132,6 +133,8 @@ func flyingFunction(delta):
 	playerBody.flyingCalc(delta)
 	playerLossCalc(delta)
 	camera.global_position = playerBody.global_position
+	if playerBody.visible == false:
+		get_tree().paused = true
 	pass
 
 var moneyLoss = 1
@@ -155,9 +158,41 @@ func playerLossCalc(delta):
 	motiveLoss = tickLoss(motiveLoss, motivationMag,delta, 1,0)
 	knowledgeLoss = tickLoss(knowledgeLoss, knowledgeMag,delta, 1,0)
 	planningLoss = tickLoss(planningLoss, planningMag,delta, 1,0)
+	
+	competitionMag.position.x+=1*delta
 
 func popFunction():
 	pass
 
 func goalFunction():
 	pass
+
+func _on_player_body_health_pop() -> void:
+	var score = $CanvasLayer/MarginContainer/NinePatchRect/SkillOptions/Score.text
+	var line ="You couldn't handle the pressure but you "+score
+	line+="\nClick Here to Retry"
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.text = line
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.visible = true
+	get_tree().paused = true
+
+func _on_player_body_high_pop() -> void:
+	var score = $CanvasLayer/MarginContainer/NinePatchRect/SkillOptions/Score.text
+	var line = "Someone really liked you and paid you for your dreams but you "+ score
+	line+="\nClick Here to Retry"
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.text = line
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.visible = true
+	get_tree().paused = true
+
+func _on_player_body_low_pop() -> void:
+	var score = $CanvasLayer/MarginContainer/NinePatchRect/SkillOptions/Score.text
+	var line = "No one cared but you "+score
+	line+="\nClick Here to Retry"
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.text = line
+	$CanvasLayer/MarginContainer/NinePatchRect/GameOver.visible = true
+	get_tree().paused = true
+	pass # Replace with function body.
+
+func _on_game_over_pressed() -> void:
+	print("pressed")
+	get_tree().reload_current_scene()
+	pass # Replace with function body.

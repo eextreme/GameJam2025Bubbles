@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://23j4i76l3xw5"
+path="res://.godot/imported/Elevate Your Dreams.mp3-077b309da90d577be35edc5addbaa40b.mp3str"
+
+[deps]
+
+source_file="res://Music/Elevate Your Dreams.mp3"
+dest_files=["res://.godot/imported/Elevate Your Dreams.mp3-077b309da90d577be35edc5addbaa40b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

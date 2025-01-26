@@ -18,8 +18,20 @@ func _ready() -> void:
 	print("loading attributes")
 	var target = get_tree().get_first_node_in_group("target").global_position
 	mass = 4/3 * PI * 10 * 3.8*pow(10,-4)
-	
+	match selected:
+		0:
+			supportMoney()
+		1:
+			supportPeers()
+		2:
+			supportMotivation()
+		3:
+			supportKnowledge()
+		4:
+			supportPlanning()
 	pass # Replace with function body.
+
+@onready var funcArray = [supportMoney(),supportPeers(),supportMotivation(),supportKnowledge(),supportPlanning()]
 
 var start = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -34,20 +46,20 @@ func _physics_process(delta: float) -> void:
 	var forceRng = Vector2(randf_range(-0.1,0.1),randf_range(-0.1,0.1))
 	apply_central_force(floatForce-downForce+drag+forceRng)
 	
-	if global_position.y<-1000 or global_position.x>1000:
-		queue_free()
+	#if global_position.y<-1000 or global_position.x>1000:
+		#queue_free()
 	
 	pass
 
+
 func supportMoney():
-	print("Support with Money")
-	#Increase Radius
-	#Low - insignificant, fragile
+	$Sprite2D/centralImage.texture = load("res://Art/PowerUps/coins.png")
 	#Medium - move well with others
 	#High - more money means more cost means
 	pass
 	
 func supportPeers():
+	$Sprite2D/centralImage.texture = load("res://Art/PowerUps/discussion.png")
 	print("Support with Peers")
 	#Increase Lift Force, increase competition and obstacles
 	#Low - low lift, can sink
@@ -56,6 +68,7 @@ func supportPeers():
 	pass
 	
 func supportMotivation():
+	$Sprite2D/centralImage.texture = load("res://Art/PowerUps/bugle-call.png")
 	print("Support with Motivation")
 	#Increase forward velocity, increase drag, and can miss power-ups
 	#Low - slow forward velocity
@@ -64,6 +77,7 @@ func supportMotivation():
 	pass
 
 func supportKnowledge():
+	$Sprite2D/centralImage.texture = load("res://Art/PowerUps/enlightenment.png")
 	print("Support with Knowledge")
 	#Increased stability, increased density,
 	#Low - easily popped
@@ -72,6 +86,7 @@ func supportKnowledge():
 	pass
 
 func supportPlanning():
+	$Sprite2D/centralImage.texture = load("res://Art/PowerUps/calendar.png")
 	print("Support with Planning")
 	#Float stability, float amplitude
 	#Low high float amplitude
@@ -94,4 +109,9 @@ func _on_body_entered(body: Node2D) -> void:
 			launchType.PLAN:
 				supportPlanning()
 		queue_free()
+	pass # Replace with function body.
+
+
+func _on_timer_timeout() -> void:
+	queue_free()
 	pass # Replace with function body.

@@ -1,19 +1,175 @@
-[gd_scene load_steps=25 format=3 uid="uid://djk66ke8w80s8"]
+[gd_scene load_steps=39 format=3 uid="uid://djk66ke8w80s8"]
 
 [ext_resource type="Script" path="res://game_scene.gd" id="1_y4wdy"]
-[ext_resource type="Texture2D" uid="uid://bsmwwf3i3rs1h" path="res://Art/vecteezy_soap-bubble_36642946.png" id="2_j58jx"]
 [ext_resource type="Script" path="res://player_body_V2.gd" id="2_xdls2"]
+[ext_resource type="Texture2D" uid="uid://csbjig6wtrxmr" path="res://Art/Coloured/512x512/bubble_1.png" id="3_43u0a"]
 [ext_resource type="Texture2D" uid="uid://dn3jwk1pqa1gr" path="res://Art/BG/game_background_1/game_background_1.png" id="4_qk76v"]
+[ext_resource type="Texture2D" uid="uid://jvlfyr6ewpwc" path="res://Art/Coloured/512x512/bubble_2.png" id="4_xp61i"]
 [ext_resource type="Texture2D" uid="uid://cvdnrvw634my4" path="res://Art/Props/bubbleHolder.png" id="5_34ran"]
+[ext_resource type="Texture2D" uid="uid://cvypr5cxmpwl1" path="res://Art/Coloured/512x512/bubble_4.png" id="5_83skg"]
 [ext_resource type="Texture2D" uid="uid://dpk1mv7q28dpp" path="res://Art/PowerUps/coins.png" id="6_kxd8r"]
+[ext_resource type="Texture2D" uid="uid://bx1vy12wqola" path="res://Art/Coloured/512x512/bubble_5.png" id="6_u6bk5"]
 [ext_resource type="Texture2D" uid="uid://bno0qc4rw58m6" path="res://Art/PowerUps/discussion.png" id="7_m2g10"]
+[ext_resource type="Texture2D" uid="uid://dquk1dnc7okiq" path="res://Art/Coloured/512x512/bubble_6.png" id="7_te7ve"]
 [ext_resource type="Texture2D" uid="uid://cql62jnyys6ky" path="res://Art/PowerUps/bugle-call.png" id="8_8g0an"]
+[ext_resource type="Texture2D" uid="uid://dbirmtcdveail" path="res://Art/Coloured/512x512/bubble_7.png" id="8_slpsk"]
+[ext_resource type="Texture2D" uid="uid://ctyj12s3kbdxb" path="res://Art/Coloured/512x512/bubble_3.png" id="9_d3s7p"]
 [ext_resource type="Texture2D" uid="uid://dawgjtdj3vjpm" path="res://Art/PowerUps/enlightenment.png" id="9_mfq08"]
 [ext_resource type="Texture2D" uid="uid://cl7g6dvmrbg0" path="res://Art/PowerUps/calendar.png" id="10_168o0"]
+[ext_resource type="Texture2D" uid="uid://b2arog55a6587" path="res://Art/Coloured/512x512/bubble_pop_1.png" id="10_dbhtr"]
+[ext_resource type="Texture2D" uid="uid://cup6j0twdsenf" path="res://Art/Coloured/512x512/bubble_pop_2.png" id="11_fadtx"]
 [ext_resource type="Texture2D" uid="uid://10leo4cdjt8b" path="res://Art/Props/tracker.png" id="11_vgk38"]
+[ext_resource type="AudioStream" uid="uid://23j4i76l3xw5" path="res://Music/Elevate Your Dreams.mp3" id="20_gd57r"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_84pdr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_43u0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xp61i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_83skg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_u6bk5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_te7ve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_slpsk")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_te7ve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_slpsk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_d3s7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_dbhtr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_fadtx")
+}],
+"loop": false,
+"name": &"pop",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bdg2g"]
-radius = 50.0
+radius = 256.632
+
+[sub_resource type="Animation" id="Animation_avg25"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_oxyrp"]
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["default"]
+}
+
+[sub_resource type="Animation" id="Animation_ce8mq"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["pop"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"popType"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_guorw"]
+_data = {
+"RESET": SubResource("Animation_avg25"),
+"default": SubResource("Animation_oxyrp"),
+"pop": SubResource("Animation_ce8mq")
+}
 
 [sub_resource type="Gradient" id="Gradient_87r1e"]
 colors = PackedColorArray(0.462745, 0.25098, 0.0705882, 1, 1, 1, 1, 1)
@@ -81,7 +237,9 @@ camera = NodePath("Camera2D")
 playerBody = NodePath("PlayerBody")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(500, 0)
+offset = Vector2(450, 0)
+limit_top = -324
+limit_bottom = 324
 
 [node name="PlayerBody" type="CharacterBody2D" parent="." node_paths=PackedStringArray("integrityLabel", "ScoreLabel") groups=["target"]]
 motion_mode = 1
@@ -89,25 +247,36 @@ script = ExtResource("2_xdls2")
 integrityLabel = NodePath("../CanvasLayer/MarginContainer/NinePatchRect/SkillOptions/Integrity")
 ScoreLabel = NodePath("../CanvasLayer/MarginContainer/NinePatchRect/SkillOptions/Score")
 
+[node name="Sprite2D" type="AnimatedSprite2D" parent="PlayerBody"]
+sprite_frames = SubResource("SpriteFrames_84pdr")
+animation = &"pop"
+frame = 4
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBody"]
 shape = SubResource("CircleShape2D_bdg2g")
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerBody/CollisionShape2D"]
-texture = ExtResource("2_j58jx")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerBody"]
+root_node = NodePath("../CollisionShape2D")
+libraries = {
+"": SubResource("AnimationLibrary_guorw")
+}
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_base_offset = Vector2(0, -324)
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_mirroring = Vector2(1920, 1080)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 texture = ExtResource("4_qk76v")
+centered = false
 
 [node name="blower" type="Sprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_34ran")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
@@ -326,6 +495,22 @@ texture = ExtResource("11_vgk38")
 expand_mode = 1
 stretch_mode = 4
 
+[node name="GameOver" type="Button" parent="CanvasLayer/MarginContainer/NinePatchRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.5
+offset_top = -15.5
+offset_right = 51.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Central Text"
+
 [node name="SkillOptions" type="HBoxContainer" parent="CanvasLayer/MarginContainer/NinePatchRect"]
 layout_mode = 1
 anchors_preset = 15
@@ -388,3 +573,14 @@ layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
 text = "Score: 100"
+
+[node name="MoneyPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_gd57r")
+autoplay = true
+parameters/looping = true
+
+[connection signal="healthPop" from="PlayerBody" to="." method="_on_player_body_health_pop"]
+[connection signal="highPop" from="PlayerBody" to="." method="_on_player_body_high_pop"]
+[connection signal="lowPop" from="PlayerBody" to="." method="_on_player_body_low_pop"]
+[connection signal="animation_finished" from="PlayerBody/AnimationPlayer" to="PlayerBody" method="_on_animation_player_animation_finished"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/NinePatchRect/GameOver" to="." method="_on_game_over_pressed"]

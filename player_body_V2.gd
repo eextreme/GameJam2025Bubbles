@@ -21,6 +21,7 @@ const COMPETITION = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$AnimationPlayer.play("default")
 	pass # Replace with function body.
 
 var radius
@@ -41,93 +42,65 @@ var regen = 0
 
 var cycle = 0
 
+signal healthPop
+signal highPop
+signal lowPop
 #Money increase health, increase lift, increase degen, increase resistance
 #Support increase health, increase lift, increase regen, increase pressure
 #Motivation increase thrust, increase degen, increase amplitude
 #Knowledge increase lift, increase resistance, reduce pressure, increase regen
 #Planning increase thrust, increase regen, decrease amplitude, reduce pressure
 #Competition increase pressure, increase resistance, increase amplitude, 
-func moneyEffect(delta):
-	var moneyRatio = currentMag[MONEY]/moneyMax
-	lift-=25*moneyRatio * delta
-	thrust+=25*moneyRatio * delta
-	
-	pass
 
-func supportEffect(delta):
-	var supportRatio = currentMag[SUPPORT]/supportMax
-	lift-=25*supportRatio * delta
-	thrust+=10*supportRatio * delta
-	regen+=5*supportRatio * delta
-	
-	pass
-
-func motiveEffect(delta):
-	var motiveRatio = currentMag[MOTIVE]/startMag[MOTIVE]
-	lift-=10*motiveRatio * delta
-	thrust+=16*motiveRatio * delta
-	regen+=4*motiveRatio * delta
-	
-	
-	pass
-
-func knowledgeEffect(delta):
-	var knowledgeRatio = currentMag[KNOWLEDGE]/startMag[KNOWLEDGE]
-	lift-=7 *knowledgeRatio * delta
-	thrust+=10*knowledgeRatio * delta
-	regen+=3*knowledgeRatio * delta
-	
-	pass
-
-func planningEffect(delta):
-	var planningRatio = currentMag[PLAN]/startMag[PLAN]
-	lift-=3*planningRatio * delta
-	thrust+=5*planningRatio * delta
-	regen+=2*planningRatio * delta
-	
-	pass
-
-var compMagnitude = 75
-
-func competitionRatio(delta):
-	var competeRatio = currentMag[COMPETITION]/competeMax
-	pressure+=69*competeRatio * delta
-	resistance+=65*competeRatio * delta
-	degen+=13*competeRatio * delta
-	print(pressure," ", resistance)
-	pass
-
+var downMax = 100
+var upMax = 100
 
 func flyingCalc(delta):
-	cycle+=PI/360
+	var moneyRatio = currentMag[MONEY]/moneyMax
+	var supportRatio = currentMag[SUPPORT]/supportMax
+	var motiveRatio = currentMag[MOTIVE]/startMag[MOTIVE]
+	var knowledgeRatio = currentMag[KNOWLEDGE]/startMag[KNOWLEDGE]
+	var planningRatio = currentMag[PLAN]/startMag[PLAN]
+	var competeRatio = currentMag[COMPETITION]/competeMax
 	
-	var ratio = currentMag[MONEY]/moneyMax
-	radius = 10 * ratio
-	$CollisionShape2D.scale = ratio * Vector2(1,1)
+	print(moneyRatio," ",supportRatio," ",motiveRatio," ",knowledgeRatio," ",planningRatio, " ", competeRatio)
+	scale = moneyRatio * Vector2(1,1) * 0.5
 	
-	moneyEffect(delta)
-	supportEffect(delta)
-	motiveEffect(delta)
-	knowledgeEffect(delta)
-	planningEffect(delta)
-	competitionRatio(delta)
+	var down_force = (moneyRatio+competeRatio*0.05) * get_gravity()
+	var up_force = - (supportRatio) * get_gravity()
+	print("net force ", up_force+down_force)
+	var fwd_force = 200 * (motiveRatio)
 	
-	#print("Lift: ",lift, " Thrust: ", thrust, " Regen: ", regen)
-	#print("Lift: ",lift+abs(lift)*competitionRatio(delta), " Thrust: ", thrust-abs(thrust)*competitionRatio(delta), " Regen: ", regen)
+	var degen = 4 * (competeRatio+motiveRatio)
+	var regen = 3 * (knowledgeRatio+planningRatio)
 	
-	var thrustMag = (thrust-resistance)+randi_range(-amplitude,amplitude)
-	var liftMag = (lift+pressure)+randi_range(-amplitude,amplitude)
+	down_force.clamp(Vector2(0,0),Vector2(0,50))
+	up_force.clamp(Vector2(0,-50), Vector2(0,0))
 	
-	position.x += thrustMag*delta
-	position.y += liftMag*delta
+	position.x+= fwd_force * delta
+	position.y+= (up_force.y+down_force.y)  *delta
 	
-	#velocity.y-=100
-	#print("Fall Speed: ", velocity )
+	health+=(regen-degen)*delta
+	score=global_position.x
 	
-	
-
-
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	integrityLabel.text = "Integrity: " + str(health)
-	ScoreLabel.text = "Score: " + str(score)
+	ScoreLabel.text = "scored " + str(score)
+
+func popType():
+	if health<=0:
+		emit_signal("healthPop")
+	
+	if position.y <=-324:
+		emit_signal("highPop")
+	
+	if position.y >=324:
+		emit_signal("lowPop")
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if health>=0 and position.y>-324 and position.y<324:
+		$AnimationPlayer.play("default")
+	else:
+		$AnimationPlayer.play("pop")
+	pass # Replace with function body.
