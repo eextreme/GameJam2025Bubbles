@@ -90,6 +90,7 @@ physics_material_override = SubResource("PhysicsMaterial_sld11")
 gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 3
+linear_damp = 1.0
 script = ExtResource("2_404le")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBody"]

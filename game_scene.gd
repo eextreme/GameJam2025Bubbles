@@ -40,11 +40,14 @@ func _ready() -> void:
 var delay = 0	
 
 func spawnSupport(entry):
+	var magArray = [moneyMag, supportMag, motivationMag, knowledgeMag,planningMag]
 	var item = bubble.instantiate() as SupportBubble
-	item.global_position.x = global_position.x
-	item.global_position.y = 324
+	item.global_position.x = playerBody.global_position.x
+	item.global_position.y = playerBody.global_position.y+324
 	item.selected = entry
+	magArray[entry].position.x+=5
 	add_child(item)
+	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
@@ -88,7 +91,7 @@ var dirMag = 1
 var count = -2*PI
 
 func randomStart(stat : TextureRect, startPos, offset=0):
-	stat.position.x=startPos+sin(count+offset)*238
+	stat.position.x=startPos+sin(count+offset)*100
 	count+=randf_range(PI/720,PI/360)	
 	
 func launchFunction():
@@ -118,9 +121,31 @@ func flyingFunction(delta):
 			planningMag.position.x,
 			competitionMag.position.x]
 	playerBody.flyingCalc(delta)
+	playerLossCalc(delta)
 	camera.global_position = playerBody.global_position
 	pass
-	
+
+var moneyLoss = 1
+var supportLoss = 1
+var motiveLoss = 1
+var knowledgeLoss = 1
+var planningLoss = 1
+
+func tickLoss(target, entry : TextureRect, delta, max):
+	target-=delta
+	if target<=0:
+		entry.position.x-=randf_range(1,3)
+		return max
+	else:
+		return target
+
+func playerLossCalc(delta):
+	moneyLoss = tickLoss(moneyLoss, moneyMag,delta, 1)
+	supportLoss = tickLoss(supportLoss, supportMag,delta, 1)
+	motiveLoss = tickLoss(motiveLoss, motivationMag,delta, 1)
+	knowledgeLoss = tickLoss(knowledgeLoss, knowledgeMag,delta, 1)
+	planningLoss = tickLoss(planningLoss, planningMag,delta, 1)
+
 func popFunction():
 	pass
 
